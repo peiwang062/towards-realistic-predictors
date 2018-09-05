@@ -22,6 +22,12 @@ train_rp_dataset_net_net.py
 ```
 to get realistic predictors.
 
+We used the custom data load form, so before training, please first make a train and test sample list. Each item is formed as 
+```
+imagepath target index
+```
+
+
 ## Contact
 
 For questions, feel free to reach
