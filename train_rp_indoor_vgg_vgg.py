@@ -22,7 +22,7 @@ model_names = sorted(name for name in models.__dict__
                      if name.islower() and not name.startswith("__")
                      and callable(models.__dict__[name]))
 
-parser = argparse.ArgumentParser(description='PyTorch CIFAR-10 Training')
+parser = argparse.ArgumentParser(description='PyTorch Indoor Training')
 parser.add_argument('-d', '--dataset', default='indoor', help='dataset name')
 parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet50',
                     choices=model_names,
