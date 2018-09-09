@@ -10,7 +10,7 @@ This repo constains the pytorch implementation for the paper Towards Realistic P
 
 ## Usage
 
-Since our code is not an end-to-end trainable model, please run 
+Since our code is not an end-to-end trainable model (for a improved new version, please turn to [an end to end for realistic predictors](https://github.com/peiwang062/end2end_realistic_predictors), please run 
 ```
 train_HPnet_dataset_net_net.py
 ```
