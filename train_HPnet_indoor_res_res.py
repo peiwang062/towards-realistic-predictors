@@ -162,23 +162,28 @@ def train(train_loader, model_main, model_hp, optimizer_m, optimizer_h, epoch, c
 
         # compute output
         predicted_labels = model_main(input)
-        loss_m = criterion_f(predicted_labels, target).squeeze()
         predicted_hardness_scores = model_hp(input).squeeze()
-        loss_m = torch.mean(loss_m * predicted_hardness_scores)
-        loss_h = opposite_loss(predicted_labels, predicted_hardness_scores, target, criterion_f)
+        predicted_hardness_scores_test = predicted_hardness_scores.clone()
+        loss_m = criterion_f(predicted_labels, target).squeeze()
+        loss_m = torch.mean(loss_m * predicted_hardness_scores_test)
 
         # measure accuracy and record loss
         prec1, prec5 = accuracy(predicted_labels, target, topk=(1, 5))
         losses_m.update(loss_m.item(), input.size(0))
-        losses_h.update(loss_h.item(), input.size(0))
         top1.update(prec1[0], input.size(0))
         top5.update(prec5[0], input.size(0))
 
-        # compute gradient and do SGD step
+        # compute gradient and do SGD step for main net
         optimizer_m.zero_grad()
         loss_m.backward(retain_graph=True)
         optimizer_m.step()
 
+        # compute loss for HPnet
+        predicted_labels.detach_()
+        loss_h = opposite_loss(predicted_labels, predicted_hardness_scores, target, criterion_f)
+        losses_h.update(loss_h.item(), input.size(0))
+
+        # compute gradient and do SGD step for HPnet
         optimizer_h.zero_grad()
         loss_h.backward()
         optimizer_h.step()
